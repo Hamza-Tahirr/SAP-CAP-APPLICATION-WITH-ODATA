@@ -1,0 +1,61 @@
+<!-- app/index.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="CAP4App">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP4 App</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <!-- GSAP -->   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+
+    <script src="app.js"></script>
+    <script src="login/login.js"></script>
+    <script src="dashboard/dashboard.js"></script>
+    <script src="records/records.js"></script>
+    <script src="records/addEditController.js"></script>
+
+    <style>
+         .animate-link {
+            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .animate-link:hover {
+            transform: scale(1.05);
+            color: #f8f9fa;
+        }
+        .sidebar-header h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0;
+        }
+        .nav-item.mb-3 {
+            margin-bottom: 1.5rem;
+        }
+        .btn-outline-light:hover {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .sidebar {
+            width: 200px; /* Slightly wider */
+        }
+    </style>
+</head>
+<body>
+    <div ng-view></div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!-- app/dashboard/dashboard.html -->
+<div class="d-flex vh-100">
+    <!-- Include Sidebar -->
+    <div class="sidebar-container" ng-include="'shared/sidebar.html'"></div>
+
+    <!-- Main Content -->
+    <div class="content p-4 flex-grow-1 animate__animated animate__fadeInUp d-flex flex-column align-items-center">
+        <!-- Centered Header -->
+        <h1 class="text-center mb-4">Dashboard</h1>
+
+        <!-- Cards Row -->
+        <div class="row w-100 justify-content-center g-4">
+            <!-- Card 1: Total Number of Employees -->
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+                <div class="card text-center card-fixed-size">
+                    <div class="card-header">
+                        <i class="fas fa-users"></i> Total Number of Employees
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ totalEmployees }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2: Total IDs Generated -->
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+                <div class="card text-center card-fixed-size">
+                    <div class="card-header">
+                        <i class="fas fa-id-card"></i> Total IDs Generated
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ totalIDsGenerated }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3: Database Connected -->
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+                <div class="card text-center card-fixed-size">
+                    <div class="card-header">
+                        <i class="fas fa-database"></i> Database Connected
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Yes</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4: Total Number of Offices -->
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+                <div class="card text-center card-fixed-size">
+                    <div class="card-header">
+                        <i class="fas fa-building"></i> Total Number of Offices
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ totalOffices }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS inside dashboard.html -->
+<style>
+    .card-fixed-size {
+        width: 18rem; /* Fixed width for all cards */
+        height: 12rem; /* Fixed height for all cards */
+    }
+    .card-header {
+        font-size: 1.25rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-header i {
+        margin-right: 8px;
+    }
+    .row {
+        margin-top: 50px; /* Space between header and cards */
+    }
+</style>

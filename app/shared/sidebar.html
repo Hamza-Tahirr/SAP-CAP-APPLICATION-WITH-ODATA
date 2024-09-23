@@ -1,0 +1,25 @@
+<!-- app/shared/sidebar.html -->
+<div class="sidebar bg-dark text-white d-flex flex-column justify-content-between vh-100 p-3 animate__animated animate__fadeInLeft">
+    <div class="sidebar-header text-center">
+        <h4><i class="fas fa-user-circle"></i> HamzaTahir™</h4>
+    </div>
+
+    <ul class="nav flex-column text-center mt-4">
+        <li class="nav-item mb-3">
+            <a href="#!/dashboard" class="nav-link text-white animate-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li class="nav-item mb-3">
+            <a href="#!/records" class="nav-link text-white animate-link">
+                <i class="fas fa-folder-open"></i> Records
+            </a>
+        </li>
+    </ul>
+
+    <div class="text-center">
+        <button class="btn btn-outline-light animate-link" ng-click="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</div>
