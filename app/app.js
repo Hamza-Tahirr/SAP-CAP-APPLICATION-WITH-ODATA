@@ -16,21 +16,14 @@ app.config(function($routeProvider) {
             controller: 'RecordsController'
         })
         .when('/records/add', {
-            templateUrl: 'records/add.html', // Separate Add page
+            templateUrl: 'records/add.html',
             controller: 'AddController'
         })
-        .when('/records/edit/:id', {
-            templateUrl: 'records/edit.html', // Separate Edit page
+        .when('/records/edit/:Id', {  // Pass the ID for editing the record
+            templateUrl: 'records/edit.html',
             controller: 'EditController'
         })
         .otherwise({
             redirectTo: '/'
         });
-});
-
-// app/app.js
-app.run(function($rootScope, $location) {
-    $rootScope.logout = function() {
-        $location.path('/');
-    };
 });

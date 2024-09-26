@@ -1,13 +1,12 @@
-<!-- app/records/records.html -->
 <div class="d-flex vh-100 animate__animated animate__fadeIn">
     <div ng-include="'shared/sidebar.html'"></div>
 
     <div class="content p-4 flex-grow-1 animate__animated animate__fadeInUp">
-        <h1>Operations With Data</h1>
+        <h1>Operations With OData</h1>
 
         <div class="d-flex justify-content-end mb-3 animate__animated animate__fadeInRight">
             <a href="#!/records/add" class="btn btn-success mx-1 animate-link" style="background-color: black; color: whitesmoke;">Add</a>
-            <a href="#!/records/edit/{{selectedRecord.id}}" class="btn btn-warning mx-1 animate-link" ng-disabled="!selectedRecord" style="background-color: black; color: whitesmoke;">Edit</a>
+            <a href="#!/records/edit/{{selectedRecord.Id}}" class="btn btn-warning mx-1 animate-link" ng-disabled="!selectedRecord" style="background-color: black; color: whitesmoke;">Edit</a>
             <button class="btn btn-danger mx-1 animate-link" ng-click="deleteSelectedRecords()" ng-disabled="!selectedRecord" style="background-color: black; color: whitesmoke;">Delete</button>
         </div>
 
@@ -15,7 +14,7 @@
             <thead>
                 <tr>
                     <th>Select</th>
-                    <th>ID</th>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Location</th>
                     <th>Office</th>
@@ -24,10 +23,10 @@
             <tbody>
                 <tr ng-repeat="record in records" ng-click="selectRecord(record)" ng-class="{ 'table-active': selectedRecord === record }">
                     <td><input type="checkbox" ng-model="record.selected"></td>
-                    <td>{{ record.id }}</td>
-                    <td>{{ record.name }}</td>
-                    <td>{{ record.location }}</td>
-                    <td>{{ record.office }}</td>
+                    <td>{{ record.Id }}</td>
+                    <td>{{ record.Name }}</td>
+                    <td>{{ record.Location }}</td>
+                    <td>{{ record.Office }}</td>
                 </tr>
             </tbody>
         </table>
