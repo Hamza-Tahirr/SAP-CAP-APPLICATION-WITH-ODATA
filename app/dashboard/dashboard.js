@@ -1,5 +1,5 @@
 // app/dashboard/dashboard.js
-app.controller('DashboardController', function($scope, $http, $location) {
+app.controller('DashboardController', function($scope, $http) {
     gsap.from(".sidebar", { duration: 1, x: -250 });
 
     $scope.totalEmployees = 0;
@@ -33,9 +33,4 @@ app.controller('DashboardController', function($scope, $http, $location) {
 
     // Initialize
     $scope.fetchRecords();
-
-    // Logout function
-    $scope.logout = function() {
-        $location.path('/');
-    };
 });
