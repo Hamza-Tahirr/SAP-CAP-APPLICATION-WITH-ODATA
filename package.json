@@ -1,18 +1,15 @@
 {
-  "name": "CAP4",
+  "name": "sap-cap-odata-app",
   "version": "1.0.0",
-  "description": "A Demo CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
+  "description": "AngularJS and Node.js app for managing records through an SAP Gateway OData service",
+  "repository": "https://github.com/Hamza-Tahirr/SAP-CAP-APPLICATION-WITH-ODATA",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@sap/cds": "^8",
     "axios": "^1.7.7",
     "dotenv": "^16.6.1",
-    "express": "^4.19.2",
-    "framer-motion": "^11.5.2",
-    "sqlite3": "^5.1.7",
-    "xml2js": "^0.6.2"
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.6",
