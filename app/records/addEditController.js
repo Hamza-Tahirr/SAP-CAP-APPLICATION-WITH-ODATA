@@ -25,7 +25,7 @@ app.controller('EditController', function($scope, $http, $routeParams, $location
     $scope.flashMessage = '';
 
     // Fetch the record by its ID
-    $http.get('/api/records/' + $routeParams.Id)  // Capture the ID from the URL
+    $http.get('/api/records/' + encodeURIComponent($routeParams.Id))  // Capture the ID from the URL
         .then(function(response) {
             $scope.record = response.data;  // Prepopulate form with fetched data
         })
@@ -37,7 +37,7 @@ app.controller('EditController', function($scope, $http, $routeParams, $location
     // Function to save the updated record
     $scope.saveRecord = function() {
         // PUT request to update the record
-        $http.put('/api/records/' + $scope.record.Id, $scope.record)
+        $http.put('/api/records/' + encodeURIComponent($routeParams.Id), $scope.record)
             .then(function() {
                 $scope.flashMessage = 'Record updated successfully!';
                 // Redirect to records page after successful update

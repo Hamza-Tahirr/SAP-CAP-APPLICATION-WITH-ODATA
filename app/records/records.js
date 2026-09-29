@@ -25,7 +25,7 @@ app.controller('RecordsController', function($scope, $http) {
 
         if (selectedRecords.length > 0 && confirm('Are you sure you want to delete the selected records?')) {
             selectedRecords.forEach(record => {
-                $http.delete('/api/records/' + record.Id)
+                $http.delete('/api/records/' + encodeURIComponent(record.Id))
                     .then(function() {
                         const index = $scope.records.indexOf(record);
                         if (index > -1) {

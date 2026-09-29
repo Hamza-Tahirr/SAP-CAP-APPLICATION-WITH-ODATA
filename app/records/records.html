@@ -6,7 +6,7 @@
 
         <div class="d-flex justify-content-end mb-3 animate__animated animate__fadeInRight">
             <a href="#!/records/add" class="btn btn-success mx-1 animate-link" style="background-color: black; color: whitesmoke;">Add</a>
-            <a href="#!/records/edit/{{selectedRecord.Id}}" class="btn btn-warning mx-1 animate-link" ng-disabled="!selectedRecord" style="background-color: black; color: whitesmoke;">Edit</a>
+            <a ng-href="#!/records/edit/{{selectedRecord.Id}}" class="btn btn-warning mx-1 animate-link" ng-class="{ disabled: !selectedRecord }" style="background-color: black; color: whitesmoke;">Edit</a>
             <button class="btn btn-danger mx-1 animate-link" ng-click="deleteSelectedRecords()" ng-disabled="!selectedRecord" style="background-color: black; color: whitesmoke;">Delete</button>
         </div>
 
