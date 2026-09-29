@@ -1,25 +1,45 @@
 const axios = require('axios');
-const odataBaseUrl = 'https://saprouter.tallymarkscloud.com:8450/sap/opu/odata/sap/ZCAP_ODATA_SRV/RecordsSet';
+
+const odataBaseUrl = process.env.SAP_ODATA_URL;
+const auth = {
+    username: process.env.SAP_USER,
+    password: process.env.SAP_PASSWORD,
+};
+
+if (!odataBaseUrl || !auth.username || !auth.password) {
+    console.warn('SAP_ODATA_URL, SAP_USER or SAP_PASSWORD is not set. Copy .env.example to .env and fill it in.');
+}
+
+// OData string keys are quoted, so a single quote inside the key has to be doubled
+function recordUrl(id) {
+    const key = encodeURIComponent(String(id).replace(/'/g, "''"));
+    return `${odataBaseUrl}(Id='${key}')`;
+}
+
+function sendError(res, message, error) {
+    console.error(`${message}:`, error.message);
+    const status = (error.response && error.response.status) || 500;
+    res.status(status).send({ error: error.message });
+}
 
 // Helper function to fetch the CSRF token
 async function fetchCsrfToken() {
     try {
         const response = await axios.get(odataBaseUrl, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
+            auth,
             headers: {
-                'X-CSRF-Token': 'Fetch',  // Request the CSRF token
+                'X-CSRF-Token': 'Fetch',
             },
         });
 
+        const cookies = (response.headers['set-cookie'] || []).map((cookie) => cookie.split(';')[0]);
+
         return {
-            csrfToken: response.headers['x-csrf-token'],  // CSRF token
-            cookies: response.headers['set-cookie'],      // Cookies from the response
+            csrfToken: response.headers['x-csrf-token'],
+            cookie: cookies.join('; '),
         };
     } catch (error) {
-        console.error('Error fetching CSRF token:', error);
+        console.error('Error fetching CSRF token:', error.message);
         throw new Error('Could not fetch CSRF token');
     }
 }
@@ -27,35 +47,20 @@ async function fetchCsrfToken() {
 // Function to fetch all records from OData (NO CSRF NEEDED)
 async function getRecords(req, res) {
     try {
-        const response = await axios.get(odataBaseUrl, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
-        });
+        const response = await axios.get(odataBaseUrl, { auth });
         res.json(response.data.d.results);  // OData returns results inside 'd'
     } catch (error) {
-        console.error('Error fetching records:', error);
-        res.status(500).send({ error: error.message });
+        sendError(res, 'Error fetching records', error);
     }
 }
 
 // Function to fetch a single record by ID (NO CSRF NEEDED)
 async function getRecordById(req, res) {
-    const { Id } = req.params;  // Use 'Id' from the request parameters
-    const recordUrl = `${odataBaseUrl}(Id='${Id}')`;
-
     try {
-        const response = await axios.get(recordUrl, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
-        });
+        const response = await axios.get(recordUrl(req.params.Id), { auth });
         res.json(response.data.d);
     } catch (error) {
-        console.error('Error fetching record by ID:', error);
-        res.status(500).send({ error: error.message });
+        sendError(res, 'Error fetching record by ID', error);
     }
 }
 
@@ -65,84 +70,61 @@ async function insertRecord(req, res) {
     const newRecord = { Id, Name, Location, Office };
 
     try {
-        // Fetch CSRF token and cookies
-        const { csrfToken, cookies } = await fetchCsrfToken();
+        const { csrfToken, cookie } = await fetchCsrfToken();
 
         const response = await axios.post(odataBaseUrl, newRecord, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
+            auth,
             headers: {
-                'X-CSRF-Token': csrfToken,  // Include CSRF token in headers
-                'Cookie': cookies.join(';'), // Include cookies from CSRF fetch response
+                'X-CSRF-Token': csrfToken,
+                'Cookie': cookie,
                 'Content-Type': 'application/json',
             },
         });
         res.status(201).json(response.data.d);
     } catch (error) {
-        console.error('Error creating record:', error);
-        res.status(500).send({ error: error.message });
+        sendError(res, 'Error creating record', error);
     }
 }
 
 // Function to update an existing record by ID (CSRF NEEDED)
 async function updateRecord(req, res) {
-    const { Id } = req.params;  // Use 'Id' from the request parameters
     const { Name, Location, Office } = req.body;
-    const recordUrl = `${odataBaseUrl}(Id='${Id}')`;
 
     try {
-        // Fetch CSRF token and cookies
-        const { csrfToken, cookies } = await fetchCsrfToken();
+        const { csrfToken, cookie } = await fetchCsrfToken();
 
-        // Update record with PUT
-        await axios.put(recordUrl, { Name, Location, Office }, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
+        await axios.put(recordUrl(req.params.Id), { Name, Location, Office }, {
+            auth,
             headers: {
-                'X-CSRF-Token': csrfToken,  // Include CSRF token in headers
-                'Cookie': cookies.join(';'), // Include cookies from CSRF fetch response
+                'X-CSRF-Token': csrfToken,
+                'Cookie': cookie,
                 'Content-Type': 'application/json',
             },
         });
-        res.sendStatus(204);  // Success with no content
+        res.sendStatus(204);
     } catch (error) {
-        console.error('Error updating record:', error);
-        res.status(500).send({ error: error.message });
+        sendError(res, 'Error updating record', error);
     }
 }
 
 // Function to delete a record by ID (CSRF NEEDED)
 async function deleteRecord(req, res) {
-    const { Id } = req.params;  // Use 'Id' from the request parameters
-    const recordUrl = `${odataBaseUrl}(Id='${Id}')`;
-
     try {
-        // Fetch CSRF token and cookies
-        const { csrfToken, cookies } = await fetchCsrfToken();
+        const { csrfToken, cookie } = await fetchCsrfToken();
 
-        // Delete record with DELETE
-        await axios.delete(recordUrl, {
-            auth: {
-                username: 'abapdev',
-                password: 'Tmc@1234567',
-            },
+        await axios.delete(recordUrl(req.params.Id), {
+            auth,
             headers: {
-                'X-CSRF-Token': csrfToken,  // Include CSRF token in headers
-                'Cookie': cookies.join(';'), // Include cookies from CSRF fetch response
+                'X-CSRF-Token': csrfToken,
+                'Cookie': cookie,
             },
         });
-        res.sendStatus(204);  // Success with no content
+        res.sendStatus(204);
     } catch (error) {
-        console.error('Error deleting record:', error);
-        res.status(500).send({ error: error.message });
+        sendError(res, 'Error deleting record', error);
     }
 }
 
-// Export the functions for use in other parts of the application
 module.exports = {
     getRecords,
     getRecordById,
